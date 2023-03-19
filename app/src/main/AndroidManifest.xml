@@ -12,9 +12,14 @@
         android:theme="@style/Theme.TodoListKotlin"
         tools:targetApi="31">
         <activity
+            android:name=".AddActivities"
+            android:label="Ajouter une tâche"
+            android:parentActivityName=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
-            android:label="TodoList"
-            android:exported="true">
+            android:exported="true"
+            android:label="TodoList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
