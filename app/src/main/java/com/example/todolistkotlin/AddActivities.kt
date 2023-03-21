@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 
 class AddActivities : AppCompatActivity() {
 
@@ -20,10 +21,15 @@ class AddActivities : AppCompatActivity() {
         titleInput = findViewById(R.id.titleInput)
         contentInput = findViewById(R.id.contentInput)
         calendarView = findViewById(R.id.calendar)
+        val selectedDate = intent.getStringExtra("selectedDate")
+        val dateTextView = findViewById<TextView>(R.id.dateTextView)
+        dateTextView.text = selectedDate
+
         calendarView.setOnClickListener {
             val intent = Intent(this@AddActivities, Calendar::class.java)
             startActivity(intent)
         }
+
         saveButton = findViewById(R.id.saveButton)
         saveButton.setOnClickListener {
             val myDB = TaskDbHelper(this)
