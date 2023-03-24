@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TodoListKotlin</string>
+    <string name="ajouter">Ajouter</string>
+    <string name="contenu">Contenu</string>
+    <string name="titre">Titre</string>
+    <string name="calendar">Calendar</string>
+    <string name="calendrier">Calendrier</string>
 </resources>

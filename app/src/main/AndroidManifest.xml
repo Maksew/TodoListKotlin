@@ -16,6 +16,10 @@
             android:label="Ajouter une tâche"
             android:parentActivityName=".MainActivity"
             android:exported="false" />
+        <activity android:name=".Calendar"
+            android:label="Calendrier"
+            android:parentActivityName=".AddActivities"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
