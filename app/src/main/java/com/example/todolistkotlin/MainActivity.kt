@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         recyclerView = findViewById(R.id.recyclerView)
-        addButton = findViewById(R.id.addbutton) //TODO ERREUR
+        addButton = findViewById(R.id.addbutton)
 
         addButton.setOnClickListener {
             val intent = Intent(this@MainActivity, AddActivities::class.java)
