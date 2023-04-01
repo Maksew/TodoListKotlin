@@ -1,6 +1,7 @@
 package com.example.todolistkotlin
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -32,6 +33,12 @@ class UpdateActivity : AppCompatActivity() {
         contentInput = findViewById(R.id.contentInput2)
         dateTextView = findViewById(R.id.dateTextView2)
         updateButton = findViewById(R.id.updateButton)
+        calendar = findViewById(R.id.calendar2)
+
+        calendar.setOnClickListener {
+            val intent = Intent(this@UpdateActivity, Calendar::class.java)
+            startActivity(intent)
+        }
 
         getAndSetIntentData()
 
@@ -42,6 +49,8 @@ class UpdateActivity : AppCompatActivity() {
             title = titleInput.text.toString().trim()
             content = contentInput.text.toString().trim()
             myDB.updateData(id, title, content)
+            val intent = Intent(this@UpdateActivity, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -56,6 +65,7 @@ class UpdateActivity : AppCompatActivity() {
             titleInput.setText(title)
             contentInput.setText(content)
             Log.d("stev", "$title $content")
+
         } else {
             Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show()
         }
