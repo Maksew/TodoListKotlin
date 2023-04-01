@@ -68,6 +68,18 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         return lastId
     }
 
+    fun updateData(id: String, title: String, content: String): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_TITLE, title)
+            put(COLUMN_CONTENT, content)
+        }
+        val result = db.update(TABLE_NAME, values, "$COLUMN_ID=?", arrayOf(id))
+        db.close()
+        return result != -1
+    }
+
+
 
 }
 

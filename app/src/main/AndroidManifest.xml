@@ -21,6 +21,11 @@
             android:parentActivityName=".AddActivities"
             android:exported="false" />
         <activity
+            android:name=".UpdateActivity"
+            android:label="Modifier une tâche"
+            android:parentActivityName=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="TodoList">
