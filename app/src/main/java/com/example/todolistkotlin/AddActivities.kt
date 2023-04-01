@@ -22,8 +22,8 @@ class AddActivities : AppCompatActivity() {
         contentInput = findViewById(R.id.contentInput)
         calendarView = findViewById(R.id.calendar)
         val selectedDate = intent.getStringExtra("selectedDate")
-        val dateTextView = findViewById<TextView>(R.id.dateTextView)
-        dateTextView.text = selectedDate
+        val date = findViewById<TextView>(R.id.dateTextView)
+        date.text = selectedDate
 
         calendarView.setOnClickListener {
             val intent = Intent(this@AddActivities, Calendar::class.java)
@@ -34,8 +34,14 @@ class AddActivities : AppCompatActivity() {
         saveButton.setOnClickListener {
             val myDB = TaskDbHelper(this)
             val lastId = myDB.getLastId()
-            myDB.addTask(Task(lastId + 1, titleInput.text.toString().trim(),
-                contentInput.text.toString().trim()))
+            myDB.addTask(
+                Task(
+                    lastId + 1, titleInput.text.toString().trim(),
+                    contentInput.text.toString().trim()
+                ),
+            )
+            val intent = Intent(this@AddActivities, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }
