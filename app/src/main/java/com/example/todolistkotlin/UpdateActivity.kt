@@ -1,6 +1,7 @@
 package com.example.todolistkotlin
 
-import android.content.DialogInterface
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
@@ -34,6 +34,7 @@ class UpdateActivity : AppCompatActivity() {
         dateTextView = findViewById(R.id.dateTextView2)
         updateButton = findViewById(R.id.updateButton)
         calendar = findViewById(R.id.calendar2)
+        deleteButton = findViewById(R.id.deleteButton)
 
         calendar.setOnClickListener {
             val intent = Intent(this@UpdateActivity, Calendar::class.java)
@@ -49,8 +50,11 @@ class UpdateActivity : AppCompatActivity() {
             title = titleInput.text.toString().trim()
             content = contentInput.text.toString().trim()
             myDB.updateData(id, title, content)
-            val intent = Intent(this@UpdateActivity, MainActivity::class.java)
-            startActivity(intent)
+            finish()
+        }
+
+        deleteButton.setOnClickListener {
+            confirmationText(this, title, id)
         }
     }
 
@@ -67,7 +71,25 @@ class UpdateActivity : AppCompatActivity() {
             Log.d("stev", "$title $content")
 
         } else {
-            Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Pas de données.", Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun confirmationText(context: Context, title: String, row_id: String) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Supprimer $title ?")
+        builder.setMessage("Etes vous sur de vouloir supprimer $title ?")
+        builder.setPositiveButton("Oui") { dialog, which ->
+            val myDB = TaskDbHelper(context)
+            myDB.deleteTask(context as Activity, row_id)
+            context.startActivity(Intent(context, MainActivity::class.java))
+            finish()
+        }
+        builder.setNegativeButton("Non") { dialog, which ->
+            dialog.dismiss()
+        }
+        builder.show()
+    }
+
+
 }

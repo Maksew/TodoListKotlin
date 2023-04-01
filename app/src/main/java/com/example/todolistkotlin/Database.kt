@@ -1,10 +1,12 @@
 package com.example.todolistkotlin
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 
 data class Task(var id: Int, var title: String, var content: String)
 
@@ -80,7 +82,16 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     }
 
 
+    fun deleteTask(activity: Activity, row_id: String) {
+        val db = this.writableDatabase
+        val result = db.delete(TABLE_NAME, "$COLUMN_ID=?", arrayOf(row_id))
+        if(result == -1){
+            Toast.makeText(activity, "Failed to Delete.", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(activity, "Successfully Deleted.", Toast.LENGTH_SHORT).show()
+            activity.finish()
+        }
+    }
+
 
 }
-
-
