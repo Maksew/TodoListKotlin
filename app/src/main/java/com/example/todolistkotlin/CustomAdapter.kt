@@ -9,15 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(private val context: Context, private val taskId: ArrayList<String>,
-                    private val taskTitle: ArrayList<String>,
-                    private val taskContent: ArrayList<String>) : RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
-
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var taskTitle_txt: TextView = itemView.findViewById(R.id.taskTitle_txt)
-        var taskContent_txt: TextView = itemView.findViewById(R.id.taskContent_txt)
-        var mainLayout: LinearLayout = itemView.findViewById(R.id.mainLayout)
-    }
+class CustomAdapter(private val context: Context, private val taskId: ArrayList<String>, private val taskTitle: ArrayList<String>, private val taskContent: ArrayList<String>, private val taskDate: ArrayList<String>) : RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -25,20 +17,29 @@ class CustomAdapter(private val context: Context, private val taskId: ArrayList<
         return MyViewHolder(view)
     }
 
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.taskTitle.text = taskTitle[position]
+        holder.taskContent.text = taskContent[position]
+        holder.taskDate.text = taskDate[position]
+
+        holder.mainLayout.setOnClickListener {
+            val intent = Intent(context, UpdateActivity::class.java)
+            intent.putExtra("id", taskId[position])
+            intent.putExtra("title", taskTitle[position])
+            intent.putExtra("content", taskContent[position])
+            intent.putExtra("date", taskDate[position])
+            context.startActivity(intent)
+        }
+    }
+
     override fun getItemCount(): Int {
         return taskId.size
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.taskTitle_txt.text = taskTitle[position]
-        holder.taskContent_txt.text = taskContent[position]
-
-        holder.mainLayout.setOnClickListener {
-            val intent = Intent(context, UpdateActivity::class.java)
-            intent.putExtra("id", taskId[position].toString())
-            intent.putExtra("title", taskTitle[position].toString())
-            intent.putExtra("content", taskContent[position].toString())
-            context.startActivity(intent)
-        }
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val taskTitle: TextView = itemView.findViewById(R.id.taskTitle_txt)
+        val taskContent: TextView = itemView.findViewById(R.id.taskContent_txt)
+        val taskDate: TextView = itemView.findViewById(R.id.date_txt)
+        val mainLayout: LinearLayout = itemView.findViewById(R.id.mainLayout)
     }
 }

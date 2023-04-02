@@ -20,6 +20,8 @@ class UpdateActivity : AppCompatActivity() {
     private lateinit var calendar: Button
     private lateinit var updateButton: Button
     private lateinit var deleteButton: Button
+    private lateinit var date: String
+
 
     private var id: String = ""
     private var title: String = ""
@@ -38,8 +40,9 @@ class UpdateActivity : AppCompatActivity() {
 
         calendar.setOnClickListener {
             val intent = Intent(this@UpdateActivity, Calendar::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 1)
         }
+
 
         getAndSetIntentData()
 
@@ -50,7 +53,8 @@ class UpdateActivity : AppCompatActivity() {
             title = titleInput.text.toString().trim()
             content = contentInput.text.toString().trim()
             myDB.updateData(id, title, content)
-            finish()
+            val intent = Intent(this@UpdateActivity, MainActivity::class.java)
+            startActivity(intent)
         }
 
         deleteButton.setOnClickListener {
@@ -59,21 +63,23 @@ class UpdateActivity : AppCompatActivity() {
     }
 
     private fun getAndSetIntentData() {
-        if (intent.hasExtra("id") && intent.hasExtra("title") && intent.hasExtra("content")) {
+        if (intent.hasExtra("id") && intent.hasExtra("title") && intent.hasExtra("content") && intent.hasExtra("date")) {
             // Getting Data from Intent
             id = intent.getStringExtra("id") ?: ""
             title = intent.getStringExtra("title") ?: ""
             content = intent.getStringExtra("content") ?: ""
+            date = intent.getStringExtra("date") ?: ""
 
             // Setting Intent Data
             titleInput.setText(title)
             contentInput.setText(content)
-            Log.d("stev", "$title $content")
-
+            dateTextView.text = date
+            Log.d("stev", "$title $content $date")
         } else {
             Toast.makeText(this, "Pas de données.", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     fun confirmationText(context: Context, title: String, row_id: String) {
         val builder = AlertDialog.Builder(context)
@@ -90,6 +96,20 @@ class UpdateActivity : AppCompatActivity() {
         }
         builder.show()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Si une date a été sélectionnée dans le calendrier, on l'affiche
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val selectedDate = data?.getStringExtra("selectedDate")
+            if (selectedDate != null) {
+                date = selectedDate
+                dateTextView.text = date
+            }
+        }
+    }
+
 
 
 }

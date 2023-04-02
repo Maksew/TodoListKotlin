@@ -7,6 +7,8 @@ import android.widget.CalendarView
 import android.widget.CalendarView.OnDateChangeListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Calendar : AppCompatActivity() {
     private lateinit var date: TextView
@@ -20,12 +22,16 @@ class Calendar : AppCompatActivity() {
         date = findViewById(R.id.idDate)
         calendarView = findViewById(R.id.calendarView)
 
+        // Initialisation de la variable date avec la date du jour
+        val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        date.text = currentDate
+
         calendarView.setOnDateChangeListener(
             OnDateChangeListener { view, year, month, dayOfMonth ->
-                val Date = (dayOfMonth.toString() + "-"
-                        + (month + 1) + "-" + year)
+                val date = (dayOfMonth.toString() + "/"
+                        + (month + 1) + "/" + year)
 
-                date.setText(Date)
+                this.date.text = date
             })
 
         saveButton = findViewById(R.id.saveButtonCalendar)
@@ -39,3 +45,4 @@ class Calendar : AppCompatActivity() {
 
     }
 }
+
