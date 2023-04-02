@@ -35,11 +35,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:text="@string/acheter_de_la_salade"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:maxWidth="100dp"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/taskTitle_txt"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
 
             <TextView
                 android:id="@+id/date_txt"
