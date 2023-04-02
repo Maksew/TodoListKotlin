@@ -22,8 +22,8 @@ class Calendar : AppCompatActivity() {
 
         calendarView.setOnDateChangeListener(
             OnDateChangeListener { view, year, month, dayOfMonth ->
-                val Date = (dayOfMonth.toString() + "-"
-                        + (month + 1) + "-" + year)
+                val Date = (dayOfMonth.toString() + "/"
+                        + (month + 1) + "/" + year)
 
                 date.setText(Date)
             })

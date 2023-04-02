@@ -24,6 +24,7 @@ class UpdateActivity : AppCompatActivity() {
     private var id: String = ""
     private var title: String = ""
     private var content: String = ""
+    private var date: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +36,13 @@ class UpdateActivity : AppCompatActivity() {
         updateButton = findViewById(R.id.updateButton)
         calendar = findViewById(R.id.calendar2)
         deleteButton = findViewById(R.id.deleteButton)
+        val selectedDate = intent.getStringExtra("selectedDate")
+        val datetxt = findViewById<TextView>(R.id.dateTextView2)
+        datetxt.text = selectedDate
 
         calendar.setOnClickListener {
             val intent = Intent(this@UpdateActivity, Calendar::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 1)
         }
 
         getAndSetIntentData()
@@ -49,7 +53,7 @@ class UpdateActivity : AppCompatActivity() {
             val myDB = TaskDbHelper(this)
             title = titleInput.text.toString().trim()
             content = contentInput.text.toString().trim()
-            myDB.updateData(id, title, content)
+            myDB.updateData(id, title, content, date)
             val intent = Intent(this@UpdateActivity, MainActivity::class.java)
             startActivity(intent)
         }
@@ -65,10 +69,12 @@ class UpdateActivity : AppCompatActivity() {
             id = intent.getStringExtra("id") ?: ""
             title = intent.getStringExtra("title") ?: ""
             content = intent.getStringExtra("content") ?: ""
+            date = intent.getStringExtra("date") ?: ""
 
             // Setting Intent Data
             titleInput.setText(title)
             contentInput.setText(content)
+            dateTextView.text = date
             Log.d("stev", "$title $content")
 
         } else {
@@ -92,5 +98,13 @@ class UpdateActivity : AppCompatActivity() {
         builder.show()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val selectedDate = data?.getStringExtra("selectedDate")
+            val date = findViewById<TextView>(R.id.dateTextView)
+            date.text = selectedDate
+        }
+    }
 }

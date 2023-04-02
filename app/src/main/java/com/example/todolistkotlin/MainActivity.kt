@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private var taskId = ArrayList<String>()
     private var taskTitle = ArrayList<String>()
     private var taskContent = ArrayList<String>()
+    private var taskDate = ArrayList<String>()
 
     private lateinit var customAdapter: CustomAdapter
 
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         myDB = TaskDbHelper(this)
         stockData()
 
-        customAdapter = CustomAdapter(this, taskId, taskTitle, taskContent)
+        customAdapter = CustomAdapter(this, taskId, taskTitle, taskContent, taskDate)
         recyclerView.adapter = customAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                     taskId.add(cursor.getString(0))
                     taskTitle.add(cursor.getString(1))
                     taskContent.add(cursor.getString(2))
+                    taskDate.add(cursor.getString(3))
                 }
             }
         }

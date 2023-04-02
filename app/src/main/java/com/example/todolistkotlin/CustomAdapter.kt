@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CustomAdapter(private val context: Context, private val taskId: ArrayList<String>,
                     private val taskTitle: ArrayList<String>,
-                    private val taskContent: ArrayList<String>) : RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
+                    private val taskContent: ArrayList<String>,
+                    private val taskDate: ArrayList<String>) : RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var taskTitle_txt: TextView = itemView.findViewById(R.id.taskTitle_txt)
         var taskContent_txt: TextView = itemView.findViewById(R.id.taskContent_txt)
+        var taskDate_txt: TextView = itemView.findViewById(R.id.taskDate_txt)
         var mainLayout: LinearLayout = itemView.findViewById(R.id.mainLayout)
     }
 
@@ -32,6 +34,15 @@ class CustomAdapter(private val context: Context, private val taskId: ArrayList<
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.taskTitle_txt.text = taskTitle[position]
         holder.taskContent_txt.text = taskContent[position]
+        holder.taskDate_txt.text = taskDate[position]
+
+        val dbHelper = TaskDbHelper(context)
+        val cursor = dbHelper.readAllData()
+        if (cursor != null && cursor.moveToFirst()) {
+            cursor.moveToPosition(position)
+            holder.taskDate_txt.text = cursor.getString(cursor.getColumnIndexOrThrow(TaskDbHelper.COLUMN_DATE))
+        }
+        cursor?.close()
 
         holder.mainLayout.setOnClickListener {
             val intent = Intent(context, UpdateActivity::class.java)
@@ -41,4 +52,5 @@ class CustomAdapter(private val context: Context, private val taskId: ArrayList<
             context.startActivity(intent)
         }
     }
+
 }

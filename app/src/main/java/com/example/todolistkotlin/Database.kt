@@ -10,7 +10,7 @@ import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class Task(var id: Int, var title: String, var content: String)
+data class Task(var id: Int, var title: String, var content: String, var date: String)
 
 
 class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -40,7 +40,7 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val values = ContentValues().apply {
             put(COLUMN_TITLE, task.title)
             put(COLUMN_CONTENT, task.content)
-            put(COLUMN_DATE, SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date()))
+            put(COLUMN_DATE, task.date)
         }
         val result = db.insert(TABLE_NAME, null, values)
         db.close()
@@ -75,11 +75,12 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         return lastId
     }
 
-    fun updateData(id: String, title: String, content: String): Boolean {
+    fun updateData(id: String, title: String, content: String, date: String): Boolean {
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_TITLE, title)
             put(COLUMN_CONTENT, content)
+            put(COLUMN_DATE, date)
         }
         val result = db.update(TABLE_NAME, values, "$COLUMN_ID=?", arrayOf(id))
         db.close()

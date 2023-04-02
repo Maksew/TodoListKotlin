@@ -37,7 +37,7 @@ class AddActivities : AppCompatActivity() {
             myDB.addTask(
                 Task(
                     lastId + 1, titleInput.text.toString().trim(),
-                    contentInput.text.toString().trim()
+                    contentInput.text.toString().trim(), date.text.toString().trim()
                 ),
             )
             val intent = Intent(this@AddActivities, MainActivity::class.java)
