@@ -50,7 +50,8 @@ class UpdateActivity : AppCompatActivity() {
             title = titleInput.text.toString().trim()
             content = contentInput.text.toString().trim()
             myDB.updateData(id, title, content)
-            finish()
+            val intent = Intent(this@UpdateActivity, MainActivity::class.java)
+            startActivity(intent)
         }
 
         deleteButton.setOnClickListener {
