@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="vert">#2A6E2A</color>
     <color name="rouge">#970C18</color>
+    <color name="vert_fonce">#01350C</color>
 </resources>
