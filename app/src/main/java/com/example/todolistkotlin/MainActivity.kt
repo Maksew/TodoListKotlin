@@ -40,8 +40,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-
-
     private fun stockData() {
         val cursor = myDB.readAllData()
         if (cursor != null) {
@@ -57,7 +55,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
 }

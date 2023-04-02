@@ -13,15 +13,17 @@ import java.util.*
 data class Task(var id: Int, var title: String, var content: String, var date: String)
 
 
+
 class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         const val DATABASE_NAME = "task_database"
-        const val DATABASE_VERSION = 2 // passer de 2 à 1
+        const val DATABASE_VERSION = 3
         const val TABLE_NAME = "task_table"
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_CONTENT = "content"
         const val COLUMN_DATE = "date"
+
     }
 
 
@@ -29,6 +31,8 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val createTableSql = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_TITLE TEXT, $COLUMN_CONTENT TEXT, $COLUMN_DATE TEXT)"
         db?.execSQL(createTableSql)
     }
+
+
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
@@ -51,6 +55,9 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
             println("Tâche ajoutée avec succès")
         }
     }
+
+
+
 
     fun readAllData(): Cursor? {
         val query = "SELECT * FROM $TABLE_NAME"
@@ -86,6 +93,7 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         db.close()
         return result != -1
     }
+
 
 
     fun deleteTask(activity: Activity, row_id: String) {
