@@ -5,4 +5,7 @@
     <string name="titre">Titre</string>
     <string name="calendar">Calendar</string>
     <string name="calendrier">Calendrier</string>
+    <string name="course">Course</string>
+    <string name="acheter_de_la_salade">Acheter de la salade</string>
+    <string name="_01_01_2023">01/01/2023</string>
 </resources>
