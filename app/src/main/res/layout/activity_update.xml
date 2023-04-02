@@ -11,7 +11,7 @@
         android:id="@+id/titleInput2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="127dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/titre"
@@ -43,39 +43,44 @@
 
     <Button
         android:id="@+id/calendar2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
         android:text="@string/calendrier"
+        app:backgroundTint="@color/purple_200"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTextView2" />
 
     <Button
         android:id="@+id/updateButton"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         android:text="Mettre à jour"
         android:textAllCaps="false"
+        app:backgroundTint="@color/vert"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.266"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendar2" />
+        app:layout_constraintTop_toBottomOf="@+id/calendar2"
+        app:layout_constraintHeight_percent="0.1"/>
 
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="match_parent"
-        android:layout_height="81dp"
-        android:layout_marginTop="132dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
         android:text="Supprimer"
+        app:backgroundTint="@color/rouge"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.733"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendar2" />
+        app:layout_constraintTop_toBottomOf="@+id/updateButton"
+        app:layout_constraintHeight_percent="0.1"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
