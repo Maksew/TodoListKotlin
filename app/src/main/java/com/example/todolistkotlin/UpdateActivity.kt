@@ -11,6 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 class UpdateActivity : AppCompatActivity() {
 
@@ -21,7 +23,7 @@ class UpdateActivity : AppCompatActivity() {
     private lateinit var updateButton: Button
     private lateinit var deleteButton: Button
     private lateinit var date: String
-
+    private lateinit var taskState: String
 
     private var id: String = ""
     private var title: String = ""
@@ -43,7 +45,6 @@ class UpdateActivity : AppCompatActivity() {
             startActivityForResult(intent, 1)
         }
 
-
         getAndSetIntentData()
 
         supportActionBar?.title = title
@@ -52,11 +53,10 @@ class UpdateActivity : AppCompatActivity() {
             val myDB = TaskDbHelper(this)
             title = titleInput.text.toString().trim()
             content = contentInput.text.toString().trim()
-            myDB.updateData(id, title, content, date)
+            myDB.updateData(id, title, content, date, taskState)
             val intent = Intent(this@UpdateActivity, MainActivity::class.java)
             startActivity(intent)
         }
-
 
         deleteButton.setOnClickListener {
             confirmationText(this, title, id)
@@ -64,12 +64,13 @@ class UpdateActivity : AppCompatActivity() {
     }
 
     private fun getAndSetIntentData() {
-        if (intent.hasExtra("id") && intent.hasExtra("title") && intent.hasExtra("content") && intent.hasExtra("date")) {
+        if (intent.hasExtra("id") && intent.hasExtra("title") && intent.hasExtra("content") && intent.hasExtra("date") && intent.hasExtra("state")) {
             // Getting Data from Intent
             id = intent.getStringExtra("id") ?: ""
             title = intent.getStringExtra("title") ?: ""
             content = intent.getStringExtra("content") ?: ""
             date = intent.getStringExtra("date") ?: ""
+            taskState = intent.getStringExtra("state") ?: ""
 
             // Setting Intent Data
             titleInput.setText(title)
@@ -81,6 +82,33 @@ class UpdateActivity : AppCompatActivity() {
         }
     }
 
+    private fun determineTaskState(taskDate: String): String {
+        val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        val taskDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val currentDateTime = taskDateFormat.parse(currentDate) ?: return "À faire"
+        val taskDateTime = taskDateFormat.parse(taskDate) ?: return "À faire"
+
+        return if (taskDateTime.before(currentDateTime)) {
+            "En retard"
+        } else {
+            "À faire"
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Si une date a été sélectionnée dans le calendrier, on l'affiche
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val selectedDate = data?.getStringExtra("selectedDate")
+            if (selectedDate != null) {
+                date = selectedDate
+                dateTextView.text = date
+
+                // Mettre à jour l'état de la tâche en fonction de la nouvelle date
+                taskState = determineTaskState(date)
+            }
+        }
+    }
 
     fun confirmationText(context: Context, title: String, row_id: String) {
         val builder = AlertDialog.Builder(context)
@@ -97,20 +125,4 @@ class UpdateActivity : AppCompatActivity() {
         }
         builder.show()
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Si une date a été sélectionnée dans le calendrier, on l'affiche
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            val selectedDate = data?.getStringExtra("selectedDate")
-            if (selectedDate != null) {
-                date = selectedDate
-                dateTextView.text = date
-            }
-        }
-    }
-
-
-
 }

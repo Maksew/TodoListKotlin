@@ -15,32 +15,30 @@ class AddActivities : AppCompatActivity() {
     private lateinit var contentInput: EditText
     private lateinit var saveButton: Button
     private lateinit var calendarView: Button
-    private lateinit var date: String
+    private var date: String = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+    private var taskState: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
 
-        // Récupération des vues
         titleInput = findViewById(R.id.titleInput)
         contentInput = findViewById(R.id.contentInput)
         calendarView = findViewById(R.id.calendar)
         val dateTextView = findViewById<TextView>(R.id.dateTextView)
 
-        // Récupérer les données de l'intention
         val taskId = intent.getStringExtra("id")
         val taskTitle = intent.getStringExtra("title")
         val taskContent = intent.getStringExtra("content")
         val taskDate = intent.getStringExtra("date")
+        taskState = intent.getStringExtra("state") ?: ""
 
-        // Mettre à jour les vues avec les données récupérées
         titleInput.setText(taskTitle)
         contentInput.setText(taskContent)
         if (taskDate != null) {
             date = taskDate
             dateTextView.text = date
         } else {
-            date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
             dateTextView.text = date
         }
 
@@ -55,16 +53,36 @@ class AddActivities : AppCompatActivity() {
         saveButton.setOnClickListener {
             val myDB = TaskDbHelper(this)
             val lastId = myDB.getLastId()
+            val modifiedAt = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+
+            // Déterminer l'état de la tâche en fonction de la date
+            taskState = determineTaskState(date)
+
             myDB.addTask(
                 Task(
                     lastId + 1, // ID de la tâche
                     titleInput.text.toString().trim(), // Titre de la tâche
                     contentInput.text.toString().trim(), // Description de la tâche
-                    date // Date de la tâche
+                    date, // Date de la tâche
+                    taskState, // Etat de la tâche
+                    modifiedAt // date de modification de la tâche
                 )
             )
             val intent = Intent(this@AddActivities, MainActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun determineTaskState(taskDate: String): String {
+        val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        val taskDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val currentDateTime = taskDateFormat.parse(currentDate) ?: return "À faire"
+        val taskDateTime = taskDateFormat.parse(taskDate) ?: return "À faire"
+
+        return if (taskDateTime.before(currentDateTime)) {
+            "En retard"
+        } else {
+            "À faire"
         }
     }
 
@@ -82,3 +100,5 @@ class AddActivities : AppCompatActivity() {
         }
     }
 }
+
+
