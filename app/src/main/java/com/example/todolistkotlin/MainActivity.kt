@@ -39,11 +39,13 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
+
+
     private fun stockData() {
         val cursor = myDB.readAllData()
         if (cursor != null) {
             if (cursor.count == 0) {
-                Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Pas de données", Toast.LENGTH_SHORT).show()
             } else {
                 while (cursor.moveToNext()) {
                     taskId.add(cursor.getString(0))
@@ -53,5 +55,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
 }

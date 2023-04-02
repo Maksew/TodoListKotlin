@@ -31,9 +31,11 @@ class Calendar : AppCompatActivity() {
         saveButton = findViewById(R.id.saveButtonCalendar)
         saveButton.setOnClickListener {
             val selectedDate = date.text.toString()
-            val intent = Intent(this@Calendar, AddActivities::class.java)
+            val intent = Intent()
             intent.putExtra("selectedDate", selectedDate)
-            startActivity(intent)
+            setResult(RESULT_OK, intent)
+            finish()
         }
+
     }
 }

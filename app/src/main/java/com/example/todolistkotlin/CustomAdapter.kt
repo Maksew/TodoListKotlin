@@ -14,7 +14,6 @@ class CustomAdapter(private val context: Context, private val taskId: ArrayList<
                     private val taskContent: ArrayList<String>) : RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var taskId_txt: TextView = itemView.findViewById(R.id.taskId_txt)
         var taskTitle_txt: TextView = itemView.findViewById(R.id.taskTitle_txt)
         var taskContent_txt: TextView = itemView.findViewById(R.id.taskContent_txt)
         var mainLayout: LinearLayout = itemView.findViewById(R.id.mainLayout)
@@ -31,7 +30,6 @@ class CustomAdapter(private val context: Context, private val taskId: ArrayList<
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.taskId_txt.text = taskId[position]
         holder.taskTitle_txt.text = taskTitle[position]
         holder.taskContent_txt.text = taskContent[position]
 

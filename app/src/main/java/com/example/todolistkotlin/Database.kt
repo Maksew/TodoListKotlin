@@ -7,6 +7,8 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.util.*
 
 data class Task(var id: Int, var title: String, var content: String)
 
@@ -14,15 +16,17 @@ data class Task(var id: Int, var title: String, var content: String)
 class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         const val DATABASE_NAME = "task_database"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2 // passer de 2 à 1
         const val TABLE_NAME = "task_table"
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_CONTENT = "content"
+        const val COLUMN_DATE = "date"
     }
 
+
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableSql = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_TITLE TEXT, $COLUMN_CONTENT TEXT)"
+        val createTableSql = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_TITLE TEXT, $COLUMN_CONTENT TEXT, $COLUMN_DATE TEXT)"
         db?.execSQL(createTableSql)
     }
 
@@ -36,6 +40,7 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val values = ContentValues().apply {
             put(COLUMN_TITLE, task.title)
             put(COLUMN_CONTENT, task.content)
+            put(COLUMN_DATE, SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date()))
         }
         val result = db.insert(TABLE_NAME, null, values)
         db.close()
@@ -86,9 +91,9 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val db = this.writableDatabase
         val result = db.delete(TABLE_NAME, "$COLUMN_ID=?", arrayOf(row_id))
         if(result == -1){
-            Toast.makeText(activity, "Failed to Delete.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Echec de la suppression", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(activity, "Successfully Deleted.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Supprimé avec succès", Toast.LENGTH_SHORT).show()
             activity.finish()
         }
     }

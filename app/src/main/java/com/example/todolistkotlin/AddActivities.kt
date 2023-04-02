@@ -27,7 +27,7 @@ class AddActivities : AppCompatActivity() {
 
         calendarView.setOnClickListener {
             val intent = Intent(this@AddActivities, Calendar::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 1)
         }
 
         saveButton = findViewById(R.id.saveButton)
@@ -44,4 +44,17 @@ class AddActivities : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val selectedDate = data?.getStringExtra("selectedDate")
+            val date = findViewById<TextView>(R.id.dateTextView)
+            date.text = selectedDate
+        }
+    }
+
+
+
 }
