@@ -13,14 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="Date"
+        android:text="@string/date"
         android:textSize="25sp" />
 
     <EditText
         android:id="@+id/titleInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Titre de la tâche"
+        android:hint="@string/titre_de_la_t_che"
         android:nextFocusDown="@+id/contentInput" />
 
     <EditText
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Description de la tâche"
+        android:hint="@string/description_de_la_t_che"
         android:nextFocusDown="@+id/calendar" />
 
     <Button
@@ -38,7 +38,7 @@
         android:layout_marginTop="16dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:text="Calendrier"
+        android:text="@string/calendrier"
         app:backgroundTint="@color/purple_200"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/vert"
-        android:text="Enregistrer" />
+        android:text="@string/enregistrer" />
 
 
 </LinearLayout>

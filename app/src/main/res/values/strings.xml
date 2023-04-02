@@ -8,4 +8,8 @@
     <string name="course">Course</string>
     <string name="acheter_de_la_salade">Acheter de la salade</string>
     <string name="_01_01_2023">01/01/2023</string>
+    <string name="date">Date</string>
+    <string name="titre_de_la_t_che">Titre de la tâche</string>
+    <string name="description_de_la_t_che">Description de la tâche</string>
+    <string name="enregistrer">Enregistrer</string>
 </resources>
