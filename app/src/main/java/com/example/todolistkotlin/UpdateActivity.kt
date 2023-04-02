@@ -52,10 +52,11 @@ class UpdateActivity : AppCompatActivity() {
             val myDB = TaskDbHelper(this)
             title = titleInput.text.toString().trim()
             content = contentInput.text.toString().trim()
-            myDB.updateData(id, title, content)
+            myDB.updateData(id, title, content, date)
             val intent = Intent(this@UpdateActivity, MainActivity::class.java)
             startActivity(intent)
         }
+
 
         deleteButton.setOnClickListener {
             confirmationText(this, title, id)
