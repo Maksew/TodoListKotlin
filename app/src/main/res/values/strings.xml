@@ -12,4 +12,5 @@
     <string name="titre_de_la_t_che">Titre de la tâche</string>
     <string name="description_de_la_t_che">Description de la tâche</string>
     <string name="enregistrer">Enregistrer</string>
+    <string name="etat">Etat</string>
 </resources>
