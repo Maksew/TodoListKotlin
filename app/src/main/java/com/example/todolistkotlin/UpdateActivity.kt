@@ -24,6 +24,7 @@ class UpdateActivity : AppCompatActivity() {
     private lateinit var deleteButton: Button
     private lateinit var date: String
     private lateinit var taskState: String
+    private lateinit var markAsDoneButton: Button
 
     private var id: String = ""
     private var title: String = ""
@@ -39,6 +40,7 @@ class UpdateActivity : AppCompatActivity() {
         updateButton = findViewById(R.id.updateButton)
         calendar = findViewById(R.id.calendar2)
         deleteButton = findViewById(R.id.deleteButton)
+        markAsDoneButton = findViewById(R.id.markAsDoneButton) // Ajouter cette ligne pour le bouton "Fait"
 
         calendar.setOnClickListener {
             val intent = Intent(this@UpdateActivity, Calendar::class.java)
@@ -58,10 +60,22 @@ class UpdateActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Ajouter ce bloc pour gérer le clic sur le bouton "Fait"
+        markAsDoneButton.setOnClickListener {
+            val myDB = TaskDbHelper(this)
+            title = titleInput.text.toString().trim()
+            content = contentInput.text.toString().trim()
+            taskState = "Fait"
+            myDB.updateData(id, title, content, date, taskState)
+            val intent = Intent(this@UpdateActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
         deleteButton.setOnClickListener {
             confirmationText(this, title, id)
         }
     }
+
 
     private fun getAndSetIntentData() {
         if (intent.hasExtra("id") && intent.hasExtra("title") && intent.hasExtra("content") && intent.hasExtra("date") && intent.hasExtra("state")) {

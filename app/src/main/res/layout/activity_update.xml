@@ -84,6 +84,14 @@
         app:layout_constraintTop_toBottomOf="@+id/updateButton"
         app:layout_constraintHeight_percent="0.1"/>
 
+    <Button
+        android:id="@+id/markAsDoneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/deleteButton"
+        android:text="Fait"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.example.todolistkotlin
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,13 +13,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var addButton: FloatingActionButton
+    private lateinit var sortButton: Button
     private lateinit var myDB: TaskDbHelper
     private var taskId = ArrayList<String>()
     private var taskTitle = ArrayList<String>()
     private var taskContent = ArrayList<String>()
     private var taskDate = ArrayList<String>()
     private var taskState = ArrayList<String>()
-
 
     private lateinit var customAdapter: CustomAdapter
 
@@ -28,6 +29,11 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         addButton = findViewById(R.id.addbutton)
+        sortButton = findViewById(R.id.sortButton)
+
+        sortButton.setOnClickListener {
+            sortTasksByState()
+        }
 
         addButton.setOnClickListener {
             val intent = Intent(this@MainActivity, AddActivities::class.java)
@@ -58,4 +64,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private var sortState = "default"
+
+    private fun sortTasksByState() {
+        when (sortState) {
+            "default" -> {
+                taskState.sort()
+                sortState = "asc"
+            }
+            "asc" -> {
+                taskState.sortByDescending { it == "À faire" }
+                sortState = "desc"
+            }
+            "desc" -> {
+                taskState.sortByDescending { it == "Fait" }
+                sortState = "default"
+            }
+        }
+        customAdapter.notifyDataSetChanged()
+    }
+
 }
+
