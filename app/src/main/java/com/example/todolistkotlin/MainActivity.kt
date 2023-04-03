@@ -1,5 +1,6 @@
 package com.example.todolistkotlin
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         myDB = TaskDbHelper(this)
         stockData()
 
-        customAdapter = CustomAdapter(this, taskId, taskTitle, taskContent, taskDate, taskState)
+        customAdapter = CustomAdapter(this, taskId, taskTitle, taskContent, taskDate, taskState, myDB)
         recyclerView.adapter = customAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
@@ -84,6 +85,18 @@ class MainActivity : AppCompatActivity() {
         }
         customAdapter.notifyDataSetChanged()
     }
+
+    override fun onResume() {
+        super.onResume()
+        checkAllTasks()
+    }
+
+    private fun checkAllTasks() {
+        for (position in taskId.indices) {
+            customAdapter.checkTaskDate(position)
+        }
+    }
+
 
 }
 

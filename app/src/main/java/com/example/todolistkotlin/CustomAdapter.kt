@@ -1,5 +1,6 @@
 package com.example.todolistkotlin
 
+import NotificationHelper
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -9,6 +10,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class CustomAdapter(
     private val context: Context,
@@ -16,7 +21,9 @@ class CustomAdapter(
     private val taskTitle: ArrayList<String>,
     private val taskContent: ArrayList<String>,
     private val taskDate: ArrayList<String>,
-    private val taskState: ArrayList<String>
+    private val taskState: ArrayList<String>,
+    private val myDB: TaskDbHelper,
+    private val notificationHelper: NotificationHelper = NotificationHelper()
 ) : RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -31,6 +38,7 @@ class CustomAdapter(
         holder.taskDate.text = taskDate[position]
         holder.taskState.text = taskState[position]
 
+
         // Ajout de la gestion des couleurs en fonction de l'état
         when (taskState[position]) {
             "À faire" -> holder.taskState.setTextColor(Color.parseColor("#90EE90")) // Vert clair
@@ -39,6 +47,7 @@ class CustomAdapter(
             else -> holder.taskState.setTextColor(Color.BLACK)
         }
 
+        checkTaskDate(position)
 
         holder.mainLayout.setOnClickListener {
             val intent = Intent(context, UpdateActivity::class.java)
@@ -49,6 +58,27 @@ class CustomAdapter(
             intent.putExtra("state", taskState[position])
             context.startActivity(intent)
         }
+    }
+
+    fun checkTaskDate(position: Int): Boolean {
+        val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(taskDate[position])
+        if (date != null) {
+            val days = TimeUnit.DAYS.convert(date.time - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+            if (days < 0) {
+                if (taskState[position] != "En retard") {
+                    taskState[position] = "En retard"
+                    myDB.updateTaskState(taskId[position], "En retard") // Mettre à jour l'état de la tâche dans la base de données
+                    // holder.taskState.text = "En retard" // Mettre à jour le texte de l'état de la tâche
+                    // holder.taskState.setTextColor(Color.RED) // Changer la couleur du texte de l'état de la tâche
+                }
+                notificationHelper.showNotification(context, "Tâche en retard", "${taskTitle[position]} est en retard.")
+                return true
+            } else if (days < 3) {
+                notificationHelper.showNotification(context, "Tâche bientôt expirée", "${taskTitle[position]} expire dans $days jour(s).")
+                return true
+            }
+        }
+        return false
     }
 
 

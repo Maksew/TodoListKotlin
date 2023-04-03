@@ -112,4 +112,13 @@ class TaskDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
             activity.finish()
         }
     }
+
+    fun updateTaskState(id: String, state: String) {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(COLUMN_STATE, state)
+        db.update(TABLE_NAME, contentValues, "$COLUMN_ID = ?", arrayOf(id))
+    }
+
+
 }
